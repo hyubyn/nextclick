@@ -22,21 +22,27 @@ class FeedsViewController: BaseViewController {
     private var screenType: ScreenType = .feeds
     private var selectedIndex = 0
     private var loadingIndicator = UIActivityIndicatorView(style: .large)
-
+    private var scrolledToSelectedIndex = false
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         if screenType == .feeds {
+            title = "Stories"
             view.addSubview(loadingIndicator)
             loadingIndicator.center = view.center
             loadingIndicator.startAnimating()
             presenter?.startFetchingFeeds()
+        } else {
+            title = "Preview"
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        collectionView.collectionViewLayout.invalidateLayout()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !scrolledToSelectedIndex {
+            scrolledToSelectedIndex = true
+            collectionView.scrollToItem(at: IndexPath(row: selectedIndex, section: 0), at: .centeredHorizontally, animated: true)
+        }
     }
     
     func set(screenType: ScreenType, selectedIndex: Int, feeds: [NTFeed]) {
@@ -46,8 +52,10 @@ class FeedsViewController: BaseViewController {
     }
     
     private func setupView() {
+        view.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.register(UINib(nibName: "FeedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: cellIdentifier)
         switch screenType {
         case .feeds:
             collectionView.showsVerticalScrollIndicator = false
@@ -59,7 +67,6 @@ class FeedsViewController: BaseViewController {
             }
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(dismissScreen))
         }
-        collectionView.register(UINib(nibName: "FeedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: cellIdentifier)
     }
     
     @objc private func dismissScreen() {
@@ -74,7 +81,6 @@ extension FeedsViewController: PresenterToViewProtocol {
             self.loadingIndicator.stopAnimating()
             self.feeds = feeds
             self.collectionView.reloadData()
-            self.collectionView.scrollToItem(at: IndexPath(row: self.selectedIndex, section: 0), at: .centeredVertically, animated: false)
         }
     }
     

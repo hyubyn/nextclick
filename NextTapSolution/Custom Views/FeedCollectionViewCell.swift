@@ -10,12 +10,11 @@ import UIKit
 import SDWebImage
 
 class FeedCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var coverImageView: UIImageView!
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var likeContainerView: UIView!
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var likeCountLabel: UILabel!
-    private var isSizeCalculated: Bool = false
+    @IBOutlet private weak var coverImageView: UIImageView!
+    @IBOutlet private weak var containerView: UIView!
+    @IBOutlet private weak var likeContainerView: UIView!
+    @IBOutlet private weak var userNameLabel: UILabel!
+    @IBOutlet private weak var likeCountLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,18 +31,5 @@ class FeedCollectionViewCell: UICollectionViewCell {
         } else {
             likeContainerView.isHidden = true
         }
-    }
-
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        if !isSizeCalculated {
-            setNeedsLayout()
-            layoutIfNeeded()
-            let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-            var newFrame = layoutAttributes.frame
-            newFrame.size.width = CGFloat(ceilf(Float(size.width)))
-            layoutAttributes.frame = newFrame
-            isSizeCalculated = true
-        }
-        return layoutAttributes
     }
 }

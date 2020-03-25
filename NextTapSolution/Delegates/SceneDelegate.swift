@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
         self.window = UIWindow(windowScene: windowScene)
-        let rootNC = FeedRouter.createModule(type: .feeds, selectedIndex: 0, feeds: [])
+        let rootNC = UINavigationController(rootViewController: FeedRouter.createModule(type: .feeds, selectedIndex: 0, feeds: []))
         self.window?.rootViewController = rootNC
         self.window?.makeKeyAndVisible()
     }
