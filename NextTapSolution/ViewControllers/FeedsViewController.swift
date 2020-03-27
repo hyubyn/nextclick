@@ -27,7 +27,7 @@ class FeedsViewController: BaseViewController {
         super.viewDidLoad()
         setupView()
         if screenType == .feeds {
-            title = "Stories"
+            title = "STELLER"
             view.addSubview(loadingIndicator)
             loadingIndicator.center = view.center
             loadingIndicator.startAnimating()

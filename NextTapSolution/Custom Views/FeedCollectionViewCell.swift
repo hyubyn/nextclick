@@ -20,6 +20,7 @@ class FeedCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         containerView?.backgroundColor = .clear
         coverImageView?.layer.cornerRadius = 5
+        //coverImageView?.clipsToBounds = true
     }
 
     func setData(feed: NTFeed) {
